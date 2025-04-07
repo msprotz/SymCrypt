@@ -297,7 +297,11 @@ typedef enum _SYMCRYPT_DLGROUP_DH_SAFEPRIMETYPE {
 
 #define SYMCRYPT_LOAD_LSBFIRST16( p )   SYMCRYPT_INTERNAL_LOAD_LSBFIRST16( p )
 #define SYMCRYPT_LOAD_LSBFIRST32( p )   SYMCRYPT_INTERNAL_LOAD_LSBFIRST32( p )
-#define SYMCRYPT_LOAD_LSBFIRST64( p )   SYMCRYPT_INTERNAL_LOAD_LSBFIRST64( p )
+
+__attribute__((annotate("scylla_opaque")))
+static inline UINT64 SYMCRYPT_LOAD_LSBFIRST64(PUINT8 p ) {
+  return SYMCRYPT_INTERNAL_LOAD_LSBFIRST64( p );
+}
 
 #define SYMCRYPT_LOAD_MSBFIRST16( p )   SYMCRYPT_INTERNAL_LOAD_MSBFIRST16( p )
 #define SYMCRYPT_LOAD_MSBFIRST32( p )   SYMCRYPT_INTERNAL_LOAD_MSBFIRST32( p )
@@ -305,7 +309,11 @@ typedef enum _SYMCRYPT_DLGROUP_DH_SAFEPRIMETYPE {
 
 #define SYMCRYPT_STORE_LSBFIRST16( p, v )   SYMCRYPT_INTERNAL_STORE_LSBFIRST16( p, v )
 #define SYMCRYPT_STORE_LSBFIRST32( p, v )   SYMCRYPT_INTERNAL_STORE_LSBFIRST32( p, v )
-#define SYMCRYPT_STORE_LSBFIRST64( p, v )   SYMCRYPT_INTERNAL_STORE_LSBFIRST64( p, v )
+__attribute__((annotate("scylla_opaque")))
+__attribute__((annotate("scylla_mutability(mut, _)")))
+static inline void SYMCRYPT_STORE_LSBFIRST64( PUINT8 p, UINT64 v ) {
+  SYMCRYPT_INTERNAL_STORE_LSBFIRST64( p, v );
+}
 
 #define SYMCRYPT_STORE_MSBFIRST16( p, v )   SYMCRYPT_INTERNAL_STORE_MSBFIRST16( p, v )
 #define SYMCRYPT_STORE_MSBFIRST32( p, v )   SYMCRYPT_INTERNAL_STORE_MSBFIRST32( p, v )
@@ -323,6 +331,7 @@ typedef enum _SYMCRYPT_DLGROUP_DH_SAFEPRIMETYPE {
 // These functions are not side-channel safe.
 //
 
+__attribute__((annotate("scylla_opaque")))
 SYMCRYPT_ERROR
 SYMCRYPT_CALL
 SymCryptLoadLsbFirstUint32(
@@ -330,6 +339,7 @@ SymCryptLoadLsbFirstUint32(
                         SIZE_T  cbSrc,
     _Out_               PUINT32 pDst );
 
+__attribute__((annotate("scylla_opaque")))
 SYMCRYPT_ERROR
 SYMCRYPT_CALL
 SymCryptLoadLsbFirstUint64(
@@ -337,6 +347,7 @@ SymCryptLoadLsbFirstUint64(
                         SIZE_T  cbSrc,
     _Out_               PUINT64 pDst );
 
+__attribute__((annotate("scylla_opaque")))
 SYMCRYPT_ERROR
 SYMCRYPT_CALL
 SymCryptLoadMsbFirstUint32(
@@ -344,6 +355,7 @@ SymCryptLoadMsbFirstUint32(
                         SIZE_T  cbSrc,
     _Out_               PUINT32 pDst );
 
+__attribute__((annotate("scylla_opaque")))
 SYMCRYPT_ERROR
 SYMCRYPT_CALL
 SymCryptLoadMsbFirstUint64(
@@ -351,6 +363,7 @@ SymCryptLoadMsbFirstUint64(
                         SIZE_T  cbSrc,
     _Out_               PUINT64 pDst );
 
+__attribute__((annotate("scylla_opaque")))
 SYMCRYPT_ERROR
 SYMCRYPT_CALL
 SymCryptStoreLsbFirstUint32(
@@ -358,6 +371,7 @@ SymCryptStoreLsbFirstUint32(
     _Out_writes_( cbDst )   PBYTE   pbDst,
                             SIZE_T  cbDst );
 
+__attribute__((annotate("scylla_opaque")))
 SYMCRYPT_ERROR
 SYMCRYPT_CALL
 SymCryptStoreLsbFirstUint64(
@@ -365,6 +379,7 @@ SymCryptStoreLsbFirstUint64(
     _Out_writes_( cbDst )   PBYTE   pbDst,
                             SIZE_T  cbDst );
 
+__attribute__((annotate("scylla_opaque")))
 SYMCRYPT_ERROR
 SYMCRYPT_CALL
 SymCryptStoreMsbFirstUint32(
@@ -372,6 +387,7 @@ SymCryptStoreMsbFirstUint32(
     _Out_writes_( cbDst )   PBYTE   pbDst,
                             SIZE_T  cbDst );
 
+__attribute__((annotate("scylla_opaque")))
 SYMCRYPT_ERROR
 SYMCRYPT_CALL
 SymCryptStoreMsbFirstUint64(

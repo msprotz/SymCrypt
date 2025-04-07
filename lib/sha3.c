@@ -68,7 +68,7 @@ static UINT64 KeccakIotaK[24] = {
 
 // Apply Theta transformation to the state
 #define KECCAK_THETA(state) { \
-    UINT64 colSum[5]; \
+    UINT64 colSum[5] = { 0 }; \
     colSum[0] = KECCAK_COLUMN_SUM(state, 0); \
     colSum[1] = KECCAK_COLUMN_SUM(state, 1); \
     colSum[2] = KECCAK_COLUMN_SUM(state, 2); \
@@ -191,7 +191,10 @@ SymCryptKeccakReset(_Out_ PSYMCRYPT_KECCAK_STATE pState)
     // Wipe the Keccak permutation state and set the mutable state variables to their
     // default values. Non-mutable state variables retain their values. State becomes
     // re-initialized after this call.
-    SymCryptWipeKnownSize(pState->state, sizeof(pState->state));
+    // SCYLLA: rewrite to use zeroing without casts.
+    for (size_t i = 0; i < 25; i++)
+      pState->state[i] = 0;
+    // SymCryptWipeKnownSize(pState->state, sizeof(pState->state));
     pState->stateIndex = 0;
     pState->squeezeMode = FALSE;
 }
@@ -471,6 +474,9 @@ SymCryptKeccakExtract(
     }
 }
 
+// SCYLLA: skip those two we don't need them
+#ifndef SCYLLA
+
 //
 // SymCryptKeccakStateExport
 //
@@ -617,3 +623,5 @@ cleanup:
 
     return scError;
 }
+
+#endif

@@ -3297,6 +3297,7 @@ SymCryptWipe(
 #pragma prefast(push)
 #pragma prefast( disable: 26001 )
 
+__attribute__((annotate("scylla_opaque")))
 FORCEINLINE
 VOID
 SYMCRYPT_CALL
@@ -3369,6 +3370,7 @@ SymCryptWipeKnownSize(_Out_writes_bytes_(cbData) PVOID pbData, SIZE_T cbData)
 
 #else // Platform switch for SymCryptWipeKnownSize
 
+__attribute__((annotate("scylla_opaque")))
 FORCEINLINE
 VOID
 SYMCRYPT_CALL
