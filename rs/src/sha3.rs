@@ -21,7 +21,7 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
   {
     {
       let mut colSum: [u64; 5] = [0u64; 5usize];
-      (&mut colSum)[0usize] =
+      colSum[0usize] =
           pState[0i32.wrapping_add(0i32) as usize] ^ pState[5i32.wrapping_add(0i32) as usize]
           ^
           pState[10i32.wrapping_add(0i32) as usize]
@@ -29,7 +29,7 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
           pState[15i32.wrapping_add(0i32) as usize]
           ^
           pState[20i32.wrapping_add(0i32) as usize];
-      (&mut colSum)[1usize] =
+      colSum[1usize] =
           pState[0i32.wrapping_add(1i32) as usize] ^ pState[5i32.wrapping_add(1i32) as usize]
           ^
           pState[10i32.wrapping_add(1i32) as usize]
@@ -37,7 +37,7 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
           pState[15i32.wrapping_add(1i32) as usize]
           ^
           pState[20i32.wrapping_add(1i32) as usize];
-      (&mut colSum)[2usize] =
+      colSum[2usize] =
           pState[0i32.wrapping_add(2i32) as usize] ^ pState[5i32.wrapping_add(2i32) as usize]
           ^
           pState[10i32.wrapping_add(2i32) as usize]
@@ -45,7 +45,7 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
           pState[15i32.wrapping_add(2i32) as usize]
           ^
           pState[20i32.wrapping_add(2i32) as usize];
-      (&mut colSum)[3usize] =
+      colSum[3usize] =
           pState[0i32.wrapping_add(3i32) as usize] ^ pState[5i32.wrapping_add(3i32) as usize]
           ^
           pState[10i32.wrapping_add(3i32) as usize]
@@ -53,7 +53,7 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
           pState[15i32.wrapping_add(3i32) as usize]
           ^
           pState[20i32.wrapping_add(3i32) as usize];
-      (&mut colSum)[4usize] =
+      colSum[4usize] =
           pState[0i32.wrapping_add(4i32) as usize] ^ pState[5i32.wrapping_add(4i32) as usize]
           ^
           pState[10i32.wrapping_add(4i32) as usize]
@@ -63,11 +63,11 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
           pState[20i32.wrapping_add(4i32) as usize];
       {
         let t: u64 =
-            (&colSum)[4usize]
+            colSum[4usize]
             ^
-            (((&colSum)[1usize]).wrapping_shl(1u32)
+            ((colSum[1usize]).wrapping_shl(1u32)
             |
-            ((&colSum)[1usize]).wrapping_shr(64i32.wrapping_sub(1i32) as u32))
+            (colSum[1usize]).wrapping_shr(64i32.wrapping_sub(1i32) as u32))
             as
             u64;
         pState[0i32.wrapping_add(0i32) as usize] ^= t;
@@ -78,11 +78,11 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
       };
       {
         let t: u64 =
-            (&colSum)[0usize]
+            colSum[0usize]
             ^
-            (((&colSum)[2usize]).wrapping_shl(1u32)
+            ((colSum[2usize]).wrapping_shl(1u32)
             |
-            ((&colSum)[2usize]).wrapping_shr(64i32.wrapping_sub(1i32) as u32))
+            (colSum[2usize]).wrapping_shr(64i32.wrapping_sub(1i32) as u32))
             as
             u64;
         pState[0i32.wrapping_add(1i32) as usize] ^= t;
@@ -93,11 +93,11 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
       };
       {
         let t: u64 =
-            (&colSum)[1usize]
+            colSum[1usize]
             ^
-            (((&colSum)[3usize]).wrapping_shl(1u32)
+            ((colSum[3usize]).wrapping_shl(1u32)
             |
-            ((&colSum)[3usize]).wrapping_shr(64i32.wrapping_sub(1i32) as u32))
+            (colSum[3usize]).wrapping_shr(64i32.wrapping_sub(1i32) as u32))
             as
             u64;
         pState[0i32.wrapping_add(2i32) as usize] ^= t;
@@ -108,11 +108,11 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
       };
       {
         let t: u64 =
-            (&colSum)[2usize]
+            colSum[2usize]
             ^
-            (((&colSum)[4usize]).wrapping_shl(1u32)
+            ((colSum[4usize]).wrapping_shl(1u32)
             |
-            ((&colSum)[4usize]).wrapping_shr(64i32.wrapping_sub(1i32) as u32))
+            (colSum[4usize]).wrapping_shr(64i32.wrapping_sub(1i32) as u32))
             as
             u64;
         pState[0i32.wrapping_add(3i32) as usize] ^= t;
@@ -122,11 +122,11 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
         pState[20i32.wrapping_add(3i32) as usize] ^= t
       };
       let t: u64 =
-          (&colSum)[3usize]
+          colSum[3usize]
           ^
-          (((&colSum)[0usize]).wrapping_shl(1u32)
+          ((colSum[0usize]).wrapping_shl(1u32)
           |
-          ((&colSum)[0usize]).wrapping_shr(64i32.wrapping_sub(1i32) as u32))
+          (colSum[0usize]).wrapping_shr(64i32.wrapping_sub(1i32) as u32))
           as
           u64;
       pState[0i32.wrapping_add(4i32) as usize] ^= t;
@@ -685,7 +685,7 @@ pub fn SymCryptKeccakAppendLanes(
     uLaneIndex = uLaneIndex.wrapping_add(1u32);
     if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
     {
-      SymCryptKeccakPermute((pState[0usize]).state);
+      SymCryptKeccakPermute(&mut (pState[0usize]).state);
       (pState[0usize]).stateIndex = 0u32;
       uLaneIndex = 0u32
     }
@@ -696,7 +696,7 @@ pub fn SymCryptKeccakZeroAppendBlock(
   pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE]
 )
 {
-  SymCryptKeccakPermute((pState[0usize]).state);
+  SymCryptKeccakPermute(&mut (pState[0usize]).state);
   (pState[0usize]).stateIndex = 0u32
 }
 
@@ -716,7 +716,7 @@ pub fn SymCryptKeccakAppend(
   };
   if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
   {
-    SymCryptKeccakPermute((pState[0usize]).state);
+    SymCryptKeccakPermute(&mut (pState[0usize]).state);
     (pState[0usize]).stateIndex = 0u32
   };
   let uFullLanes: usize = cbData.wrapping_div(8usize);
@@ -741,7 +741,7 @@ pub fn SymCryptKeccakApplyPadding(
   as
   usize] ^=
       1u64.wrapping_shl(63u32);
-  SymCryptKeccakPermute((pState[0usize]).state);
+  SymCryptKeccakPermute(&mut (pState[0usize]).state);
   (pState[0usize]).stateIndex = 0u32;
   (pState[0usize]).squeezeMode = 1u8
 }
@@ -774,7 +774,7 @@ pub fn SymCryptKeccakExtractLanes(
   {
     if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
     {
-      SymCryptKeccakPermute((pState[0usize]).state);
+      SymCryptKeccakPermute(&mut (pState[0usize]).state);
       (pState[0usize]).stateIndex = 0u32;
       uLaneIndex = 0u32
     };
@@ -797,21 +797,21 @@ pub fn SymCryptKeccakExtract(
   if (pState[0usize]).squeezeMode == 0u8 { SymCryptKeccakApplyPadding(pState) };
   if cbResult > 0usize && (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
   {
-    SymCryptKeccakPermute((pState[0usize]).state);
+    SymCryptKeccakPermute(&mut (pState[0usize]).state);
     (pState[0usize]).stateIndex = 0u32
   };
   while
   cbResult > 0usize && (pState[0usize]).stateIndex & 7u32 != 0u32
   {
     pbResult[0usize] = SymCryptKeccakExtractByte(pState);
-    pbResult = &pbResult[1usize..];
+    pbResult = &mut pbResult[1usize..];
     cbResult = cbResult.wrapping_sub(1usize)
   };
   let uFullLanes: usize = cbResult.wrapping_div(8usize);
   if uFullLanes > 0usize
   {
     SymCryptKeccakExtractLanes(pState, pbResult, uFullLanes);
-    pbResult = &pbResult[uFullLanes.wrapping_mul(8usize)..];
+    pbResult = &mut pbResult[uFullLanes.wrapping_mul(8usize)..];
     cbResult = cbResult.wrapping_sub(uFullLanes.wrapping_mul(8usize))
   };
   while
@@ -819,11 +819,11 @@ pub fn SymCryptKeccakExtract(
   {
     if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
     {
-      SymCryptKeccakPermute((pState[0usize]).state);
+      SymCryptKeccakPermute(&mut (pState[0usize]).state);
       (pState[0usize]).stateIndex = 0u32
     };
     pbResult[0usize] = SymCryptKeccakExtractByte(pState);
-    pbResult = &pbResult[1usize..];
+    pbResult = &mut pbResult[1usize..];
     cbResult = cbResult.wrapping_sub(1usize)
   };
   if bWipe != 0u8 { SymCryptKeccakReset(pState) }
