@@ -38,7 +38,9 @@ const SYMCRYPT_HASH SymCryptShake128HashAlgorithm_default = {
     SYMCRYPT_FIELD_SIZE(SYMCRYPT_SHAKE128_STATE, ks.state),
 };
 
+#ifndef SCYLLA
 const PCSYMCRYPT_HASH SymCryptShake128HashAlgorithm = &SymCryptShake128HashAlgorithm_default;
+#endif
 
 static const BYTE shake128KATAnswer[SYMCRYPT_SHAKE128_RESULT_SIZE] = {
     0x58, 0x81, 0x09, 0x2d, 0xd8, 0x18, 0xbf, 0x5c,
@@ -90,7 +92,9 @@ const SYMCRYPT_HASH SymCryptShake256HashAlgorithm_default = {
     SYMCRYPT_FIELD_SIZE(SYMCRYPT_SHAKE256_STATE, ks.state),
 };
 
+#ifndef SCYLLA
 const PCSYMCRYPT_HASH SymCryptShake256HashAlgorithm = &SymCryptShake256HashAlgorithm_default;
+#endif
 
 static const BYTE shake256KATAnswer[SYMCRYPT_SHAKE256_RESULT_SIZE] = {
     0x48, 0x33, 0x66, 0x60, 0x13, 0x60, 0xa8, 0x77, 0x1c, 0x68, 0x63, 0x08, 0x0c, 0xc4, 0x11, 0x4d,
@@ -208,6 +212,8 @@ SymCryptCShake256Selftest(void)
         SymCryptFatal('cshk');
     }
 }
+
+#ifndef SCYLLA
 
 //
 // CShake helper functions
@@ -336,3 +342,4 @@ SymCryptKeccakAppendEncodedString(
     SymCryptKeccakAppend(pState, pbString, cbString);
 }
 
+#endif

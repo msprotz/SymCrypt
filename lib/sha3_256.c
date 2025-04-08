@@ -24,7 +24,9 @@ const SYMCRYPT_HASH SymCryptSha3_256Algorithm_default = {
     SYMCRYPT_FIELD_SIZE(SYMCRYPT_SHA3_256_STATE, ks.state),
 };
 
+#ifndef SCYLLA
 const PCSYMCRYPT_HASH SymCryptSha3_256Algorithm = &SymCryptSha3_256Algorithm_default;
+#endif
 
 
 //
