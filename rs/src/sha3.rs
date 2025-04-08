@@ -138,39 +138,39 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
     {
       {
         pState[1usize] =
-            ((pState[1usize]).wrapping_shl((&KeccakRhoK)[1usize] as u32)
+            ((pState[1usize]).wrapping_shl(KeccakRhoK[1usize] as u32)
             |
-            (pState[1usize]).wrapping_shr(64i32.wrapping_sub((&KeccakRhoK)[1usize] as i32) as u32))
+            (pState[1usize]).wrapping_shr(64i32.wrapping_sub(KeccakRhoK[1usize] as i32) as u32))
             as
             u64;
         pState[2usize] =
-            ((pState[2usize]).wrapping_shl((&KeccakRhoK)[2usize] as u32)
+            ((pState[2usize]).wrapping_shl(KeccakRhoK[2usize] as u32)
             |
-            (pState[2usize]).wrapping_shr(64i32.wrapping_sub((&KeccakRhoK)[2usize] as i32) as u32))
+            (pState[2usize]).wrapping_shr(64i32.wrapping_sub(KeccakRhoK[2usize] as i32) as u32))
             as
             u64;
         pState[3usize] =
-            ((pState[3usize]).wrapping_shl((&KeccakRhoK)[3usize] as u32)
+            ((pState[3usize]).wrapping_shl(KeccakRhoK[3usize] as u32)
             |
-            (pState[3usize]).wrapping_shr(64i32.wrapping_sub((&KeccakRhoK)[3usize] as i32) as u32))
+            (pState[3usize]).wrapping_shr(64i32.wrapping_sub(KeccakRhoK[3usize] as i32) as u32))
             as
             u64;
         pState[4usize] =
-            ((pState[4usize]).wrapping_shl((&KeccakRhoK)[4usize] as u32)
+            ((pState[4usize]).wrapping_shl(KeccakRhoK[4usize] as u32)
             |
-            (pState[4usize]).wrapping_shr(64i32.wrapping_sub((&KeccakRhoK)[4usize] as i32) as u32))
+            (pState[4usize]).wrapping_shr(64i32.wrapping_sub(KeccakRhoK[4usize] as i32) as u32))
             as
             u64
       };
       {
         pState[5i32.wrapping_mul(1i32).wrapping_add(0i32) as usize] =
             ((pState[5i32.wrapping_mul(1i32).wrapping_add(0i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(1i32).wrapping_add(0i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(1i32).wrapping_add(0i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(1i32).wrapping_add(0i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(1i32).wrapping_add(0i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(1i32).wrapping_add(0i32) as usize] as i32
               )
               as
               u32
@@ -179,12 +179,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(1i32).wrapping_add(1i32) as usize] =
             ((pState[5i32.wrapping_mul(1i32).wrapping_add(1i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(1i32).wrapping_add(1i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(1i32).wrapping_add(1i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(1i32).wrapping_add(1i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(1i32).wrapping_add(1i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(1i32).wrapping_add(1i32) as usize] as i32
               )
               as
               u32
@@ -193,12 +193,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(1i32).wrapping_add(2i32) as usize] =
             ((pState[5i32.wrapping_mul(1i32).wrapping_add(2i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(1i32).wrapping_add(2i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(1i32).wrapping_add(2i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(1i32).wrapping_add(2i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(1i32).wrapping_add(2i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(1i32).wrapping_add(2i32) as usize] as i32
               )
               as
               u32
@@ -207,12 +207,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(1i32).wrapping_add(3i32) as usize] =
             ((pState[5i32.wrapping_mul(1i32).wrapping_add(3i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(1i32).wrapping_add(3i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(1i32).wrapping_add(3i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(1i32).wrapping_add(3i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(1i32).wrapping_add(3i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(1i32).wrapping_add(3i32) as usize] as i32
               )
               as
               u32
@@ -221,12 +221,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(1i32).wrapping_add(4i32) as usize] =
             ((pState[5i32.wrapping_mul(1i32).wrapping_add(4i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(1i32).wrapping_add(4i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(1i32).wrapping_add(4i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(1i32).wrapping_add(4i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(1i32).wrapping_add(4i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(1i32).wrapping_add(4i32) as usize] as i32
               )
               as
               u32
@@ -237,12 +237,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
       {
         pState[5i32.wrapping_mul(2i32).wrapping_add(0i32) as usize] =
             ((pState[5i32.wrapping_mul(2i32).wrapping_add(0i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(2i32).wrapping_add(0i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(2i32).wrapping_add(0i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(2i32).wrapping_add(0i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(2i32).wrapping_add(0i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(2i32).wrapping_add(0i32) as usize] as i32
               )
               as
               u32
@@ -251,12 +251,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(2i32).wrapping_add(1i32) as usize] =
             ((pState[5i32.wrapping_mul(2i32).wrapping_add(1i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(2i32).wrapping_add(1i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(2i32).wrapping_add(1i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(2i32).wrapping_add(1i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(2i32).wrapping_add(1i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(2i32).wrapping_add(1i32) as usize] as i32
               )
               as
               u32
@@ -265,12 +265,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(2i32).wrapping_add(2i32) as usize] =
             ((pState[5i32.wrapping_mul(2i32).wrapping_add(2i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(2i32).wrapping_add(2i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(2i32).wrapping_add(2i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(2i32).wrapping_add(2i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(2i32).wrapping_add(2i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(2i32).wrapping_add(2i32) as usize] as i32
               )
               as
               u32
@@ -279,12 +279,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(2i32).wrapping_add(3i32) as usize] =
             ((pState[5i32.wrapping_mul(2i32).wrapping_add(3i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(2i32).wrapping_add(3i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(2i32).wrapping_add(3i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(2i32).wrapping_add(3i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(2i32).wrapping_add(3i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(2i32).wrapping_add(3i32) as usize] as i32
               )
               as
               u32
@@ -293,12 +293,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(2i32).wrapping_add(4i32) as usize] =
             ((pState[5i32.wrapping_mul(2i32).wrapping_add(4i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(2i32).wrapping_add(4i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(2i32).wrapping_add(4i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(2i32).wrapping_add(4i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(2i32).wrapping_add(4i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(2i32).wrapping_add(4i32) as usize] as i32
               )
               as
               u32
@@ -309,12 +309,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
       {
         pState[5i32.wrapping_mul(3i32).wrapping_add(0i32) as usize] =
             ((pState[5i32.wrapping_mul(3i32).wrapping_add(0i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(3i32).wrapping_add(0i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(3i32).wrapping_add(0i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(3i32).wrapping_add(0i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(3i32).wrapping_add(0i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(3i32).wrapping_add(0i32) as usize] as i32
               )
               as
               u32
@@ -323,12 +323,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(3i32).wrapping_add(1i32) as usize] =
             ((pState[5i32.wrapping_mul(3i32).wrapping_add(1i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(3i32).wrapping_add(1i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(3i32).wrapping_add(1i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(3i32).wrapping_add(1i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(3i32).wrapping_add(1i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(3i32).wrapping_add(1i32) as usize] as i32
               )
               as
               u32
@@ -337,12 +337,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(3i32).wrapping_add(2i32) as usize] =
             ((pState[5i32.wrapping_mul(3i32).wrapping_add(2i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(3i32).wrapping_add(2i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(3i32).wrapping_add(2i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(3i32).wrapping_add(2i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(3i32).wrapping_add(2i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(3i32).wrapping_add(2i32) as usize] as i32
               )
               as
               u32
@@ -351,12 +351,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(3i32).wrapping_add(3i32) as usize] =
             ((pState[5i32.wrapping_mul(3i32).wrapping_add(3i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(3i32).wrapping_add(3i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(3i32).wrapping_add(3i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(3i32).wrapping_add(3i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(3i32).wrapping_add(3i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(3i32).wrapping_add(3i32) as usize] as i32
               )
               as
               u32
@@ -365,12 +365,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
             u64;
         pState[5i32.wrapping_mul(3i32).wrapping_add(4i32) as usize] =
             ((pState[5i32.wrapping_mul(3i32).wrapping_add(4i32) as usize]).wrapping_shl(
-              (&KeccakRhoK)[5i32.wrapping_mul(3i32).wrapping_add(4i32) as usize] as u32
+              KeccakRhoK[5i32.wrapping_mul(3i32).wrapping_add(4i32) as usize] as u32
             )
             |
             (pState[5i32.wrapping_mul(3i32).wrapping_add(4i32) as usize]).wrapping_shr(
               64i32.wrapping_sub(
-                (&KeccakRhoK)[5i32.wrapping_mul(3i32).wrapping_add(4i32) as usize] as i32
+                KeccakRhoK[5i32.wrapping_mul(3i32).wrapping_add(4i32) as usize] as i32
               )
               as
               u32
@@ -380,12 +380,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
       };
       pState[5i32.wrapping_mul(4i32).wrapping_add(0i32) as usize] =
           ((pState[5i32.wrapping_mul(4i32).wrapping_add(0i32) as usize]).wrapping_shl(
-            (&KeccakRhoK)[5i32.wrapping_mul(4i32).wrapping_add(0i32) as usize] as u32
+            KeccakRhoK[5i32.wrapping_mul(4i32).wrapping_add(0i32) as usize] as u32
           )
           |
           (pState[5i32.wrapping_mul(4i32).wrapping_add(0i32) as usize]).wrapping_shr(
             64i32.wrapping_sub(
-              (&KeccakRhoK)[5i32.wrapping_mul(4i32).wrapping_add(0i32) as usize] as i32
+              KeccakRhoK[5i32.wrapping_mul(4i32).wrapping_add(0i32) as usize] as i32
             )
             as
             u32
@@ -394,12 +394,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
           u64;
       pState[5i32.wrapping_mul(4i32).wrapping_add(1i32) as usize] =
           ((pState[5i32.wrapping_mul(4i32).wrapping_add(1i32) as usize]).wrapping_shl(
-            (&KeccakRhoK)[5i32.wrapping_mul(4i32).wrapping_add(1i32) as usize] as u32
+            KeccakRhoK[5i32.wrapping_mul(4i32).wrapping_add(1i32) as usize] as u32
           )
           |
           (pState[5i32.wrapping_mul(4i32).wrapping_add(1i32) as usize]).wrapping_shr(
             64i32.wrapping_sub(
-              (&KeccakRhoK)[5i32.wrapping_mul(4i32).wrapping_add(1i32) as usize] as i32
+              KeccakRhoK[5i32.wrapping_mul(4i32).wrapping_add(1i32) as usize] as i32
             )
             as
             u32
@@ -408,12 +408,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
           u64;
       pState[5i32.wrapping_mul(4i32).wrapping_add(2i32) as usize] =
           ((pState[5i32.wrapping_mul(4i32).wrapping_add(2i32) as usize]).wrapping_shl(
-            (&KeccakRhoK)[5i32.wrapping_mul(4i32).wrapping_add(2i32) as usize] as u32
+            KeccakRhoK[5i32.wrapping_mul(4i32).wrapping_add(2i32) as usize] as u32
           )
           |
           (pState[5i32.wrapping_mul(4i32).wrapping_add(2i32) as usize]).wrapping_shr(
             64i32.wrapping_sub(
-              (&KeccakRhoK)[5i32.wrapping_mul(4i32).wrapping_add(2i32) as usize] as i32
+              KeccakRhoK[5i32.wrapping_mul(4i32).wrapping_add(2i32) as usize] as i32
             )
             as
             u32
@@ -422,12 +422,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
           u64;
       pState[5i32.wrapping_mul(4i32).wrapping_add(3i32) as usize] =
           ((pState[5i32.wrapping_mul(4i32).wrapping_add(3i32) as usize]).wrapping_shl(
-            (&KeccakRhoK)[5i32.wrapping_mul(4i32).wrapping_add(3i32) as usize] as u32
+            KeccakRhoK[5i32.wrapping_mul(4i32).wrapping_add(3i32) as usize] as u32
           )
           |
           (pState[5i32.wrapping_mul(4i32).wrapping_add(3i32) as usize]).wrapping_shr(
             64i32.wrapping_sub(
-              (&KeccakRhoK)[5i32.wrapping_mul(4i32).wrapping_add(3i32) as usize] as i32
+              KeccakRhoK[5i32.wrapping_mul(4i32).wrapping_add(3i32) as usize] as i32
             )
             as
             u32
@@ -436,12 +436,12 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
           u64;
       pState[5i32.wrapping_mul(4i32).wrapping_add(4i32) as usize] =
           ((pState[5i32.wrapping_mul(4i32).wrapping_add(4i32) as usize]).wrapping_shl(
-            (&KeccakRhoK)[5i32.wrapping_mul(4i32).wrapping_add(4i32) as usize] as u32
+            KeccakRhoK[5i32.wrapping_mul(4i32).wrapping_add(4i32) as usize] as u32
           )
           |
           (pState[5i32.wrapping_mul(4i32).wrapping_add(4i32) as usize]).wrapping_shr(
             64i32.wrapping_sub(
-              (&KeccakRhoK)[5i32.wrapping_mul(4i32).wrapping_add(4i32) as usize] as i32
+              KeccakRhoK[5i32.wrapping_mul(4i32).wrapping_add(4i32) as usize] as i32
             )
             as
             u32
@@ -616,7 +616,7 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
       pState[5i32.wrapping_mul(4i32).wrapping_add(0i32) as usize] = t1;
       pState[5i32.wrapping_mul(4i32).wrapping_add(1i32) as usize] = t2
     };
-    pState[0usize] ^= (&KeccakIotaK)[r as usize]
+    pState[0usize] ^= KeccakIotaK[r as usize]
   }
 }
 
@@ -804,14 +804,14 @@ pub fn SymCryptKeccakExtract(
   cbResult > 0usize && (pState[0usize]).stateIndex & 7u32 != 0u32
   {
     pbResult[0usize] = SymCryptKeccakExtractByte(pState);
-    pbResult = &mut pbResult[1usize..];
+    pbResult = &pbResult[1usize..];
     cbResult = cbResult.wrapping_sub(1usize)
   };
   let uFullLanes: usize = cbResult.wrapping_div(8usize);
   if uFullLanes > 0usize
   {
     SymCryptKeccakExtractLanes(pState, pbResult, uFullLanes);
-    pbResult = &mut pbResult[uFullLanes.wrapping_mul(8usize)..];
+    pbResult = &pbResult[uFullLanes.wrapping_mul(8usize)..];
     cbResult = cbResult.wrapping_sub(uFullLanes.wrapping_mul(8usize))
   };
   while
@@ -823,7 +823,7 @@ pub fn SymCryptKeccakExtract(
       (pState[0usize]).stateIndex = 0u32
     };
     pbResult[0usize] = SymCryptKeccakExtractByte(pState);
-    pbResult = &mut pbResult[1usize..];
+    pbResult = &pbResult[1usize..];
     cbResult = cbResult.wrapping_sub(1usize)
   };
   if bWipe != 0u8 { SymCryptKeccakReset(pState) }

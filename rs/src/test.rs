@@ -6,7 +6,7 @@ const EXPECTED_HASH: [ u8; 32 ] = [ 0x64, 0x4b, 0xcc, 0x7e, 0x56, 0x43, 0x73, 0x
 #[test]
 pub fn test_sha3() -> Result<(), Box<dyn std::error::Error>> {
     let mut st = [ crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE {
-        state: &mut [0u64; 25],
+        state: [0u64; 25],
         inputBlockSize: 0,
         stateIndex: 0,
         paddingValue: 0,
