@@ -5,6 +5,7 @@
 #![allow(unreachable_patterns)]
 
 #[derive(PartialEq, Clone, Copy)]
+pub(crate)
 struct SYMCRYPT_KECCAK_STATE
 {
   pub state: [u64; 25],
@@ -13,3 +14,23 @@ struct SYMCRYPT_KECCAK_STATE
   pub paddingValue: u8,
   pub squeezeMode: u8
 }
+
+#[derive(PartialEq, Clone, Copy)]
+pub(crate)
+struct SYMCRYPT_SHA3_224_STATE
+{ pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
+
+#[derive(PartialEq, Clone, Copy)]
+pub(crate)
+struct SYMCRYPT_SHA3_256_STATE
+{ pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
+
+#[derive(PartialEq, Clone, Copy)]
+pub(crate)
+struct SYMCRYPT_SHA3_384_STATE
+{ pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
+
+#[derive(PartialEq, Clone, Copy)]
+pub(crate)
+struct SYMCRYPT_SHA3_512_STATE
+{ pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }

@@ -4,16 +4,210 @@
 #![allow(unused_assignments)]
 #![allow(unreachable_patterns)]
 
-pub const KeccakRhoK: [u8; 25] =
-    [0u8, 1u8, 62u8, 28u8, 27u8, 36u8, 44u8, 6u8, 55u8, 20u8, 3u8, 10u8, 43u8, 25u8, 39u8, 41u8,
-        45u8, 15u8, 21u8, 8u8, 18u8, 2u8, 61u8, 56u8, 14u8];
-
 pub const KeccakIotaK: [u64; 24] =
     [1u64, 32898u64, 9223372036854808714u64, 9223372039002292224u64, 32907u64, 2147483649u64,
         9223372039002292353u64, 9223372036854808585u64, 138u64, 136u64, 2147516425u64, 2147483658u64,
         2147516555u64, 9223372036854775947u64, 9223372036854808713u64, 9223372036854808579u64,
         9223372036854808578u64, 9223372036854775936u64, 32778u64, 9223372039002259466u64,
         9223372039002292353u64, 9223372036854808704u64, 2147483649u64, 9223372039002292232u64];
+
+pub const KeccakRhoK: [u8; 25] =
+    [0u8, 1u8, 62u8, 28u8, 27u8, 36u8, 44u8, 6u8, 55u8, 20u8, 3u8, 10u8, 43u8, 25u8, 39u8, 41u8,
+        45u8, 15u8, 21u8, 8u8, 18u8, 2u8, 61u8, 56u8, 14u8];
+
+pub fn SymCryptKeccakAppend(
+  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
+  mut pbData: &[u8],
+  mut cbData: usize
+)
+{
+  if (pState[0usize]).squeezeMode != 0u8 { SymCryptKeccakReset(pState) };
+  while
+  cbData > 0usize && (pState[0usize]).stateIndex & 7u32 != 0u32
+  {
+    SymCryptKeccakAppendByte(pState, pbData[0usize]);
+    pbData = &pbData[1usize..];
+    cbData = cbData.wrapping_sub(1usize)
+  };
+  if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
+  {
+    SymCryptKeccakPermute(&mut (pState[0usize]).state);
+    (pState[0usize]).stateIndex = 0u32
+  };
+  let uFullLanes: usize = cbData.wrapping_div(8usize);
+  if uFullLanes > 0usize
+  {
+    SymCryptKeccakAppendLanes(pState, pbData, uFullLanes);
+    pbData = &pbData[uFullLanes.wrapping_mul(8usize)..];
+    cbData = cbData.wrapping_sub(uFullLanes.wrapping_mul(8usize))
+  };
+  SymCryptKeccakAppendBytes(pState, pbData, cbData)
+}
+
+#[inline] pub fn SymCryptKeccakAppendByte(
+  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
+  val: u8
+)
+{
+  (pState[0usize]).state[(pState[0usize]).stateIndex.wrapping_div(8u32) as usize] ^=
+      (val as u64).wrapping_shl(8u32.wrapping_mul((pState[0usize]).stateIndex.wrapping_rem(8u32)));
+  (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(1u32)
+}
+
+#[inline] pub fn SymCryptKeccakAppendBytes(
+  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
+  pbBuffer: &[u8],
+  cbBuffer: usize
+)
+{
+  for i in 0usize..cbBuffer
+  {
+    (pState[0usize]).state[(pState[0usize]).stateIndex.wrapping_add(i as u32).wrapping_div(8u32)
+    as
+    usize] ^=
+        (pbBuffer[i] as u64).wrapping_shl(
+          8u64.wrapping_mul(
+            (pState[0usize]).stateIndex.wrapping_add(i as u32).wrapping_rem(8u32) as u64
+          )
+          as
+          u32
+        )
+  };
+  (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(cbBuffer as u32)
+}
+
+pub fn SymCryptKeccakAppendLanes(
+  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
+  pbData: &[u8],
+  uLaneCount: usize
+)
+{
+  let mut uLaneIndex: u32 = (pState[0usize]).stateIndex.wrapping_div(8u32);
+  for i in 0usize..uLaneCount
+  {
+    (pState[0usize]).state[uLaneIndex as usize] ^=
+        crate::symcrypt::SYMCRYPT_LOAD_LSBFIRST64(&pbData[i.wrapping_mul(8usize)..]);
+    (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(8u32);
+    uLaneIndex = uLaneIndex.wrapping_add(1u32);
+    if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
+    {
+      SymCryptKeccakPermute(&mut (pState[0usize]).state);
+      (pState[0usize]).stateIndex = 0u32;
+      uLaneIndex = 0u32
+    }
+  }
+}
+
+pub fn SymCryptKeccakApplyPadding(
+  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE]
+)
+{
+  let uLanePos: u32 = (pState[0usize]).stateIndex.wrapping_div(8u32);
+  let uBytePos: u32 = (pState[0usize]).stateIndex.wrapping_rem(8u32);
+  (pState[0usize]).state[uLanePos as usize] ^=
+      ((pState[0usize]).paddingValue as u64).wrapping_shl(8u32.wrapping_mul(uBytePos));
+  (pState[0usize]).state[(pState[0usize]).inputBlockSize.wrapping_div(8u32).wrapping_sub(1u32)
+  as
+  usize] ^=
+      1u64.wrapping_shl(63u32);
+  SymCryptKeccakPermute(&mut (pState[0usize]).state);
+  (pState[0usize]).stateIndex = 0u32;
+  (pState[0usize]).squeezeMode = 1u8
+}
+
+pub fn SymCryptKeccakExtract(
+  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
+  mut pbResult: &mut [u8],
+  mut cbResult: usize,
+  bWipe: u8
+)
+{
+  if (pState[0usize]).squeezeMode == 0u8 { SymCryptKeccakApplyPadding(pState) };
+  if cbResult > 0usize && (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
+  {
+    SymCryptKeccakPermute(&mut (pState[0usize]).state);
+    (pState[0usize]).stateIndex = 0u32
+  };
+  while
+  cbResult > 0usize && (pState[0usize]).stateIndex & 7u32 != 0u32
+  {
+    pbResult[0usize] = SymCryptKeccakExtractByte(pState);
+    pbResult = &mut pbResult[1usize..];
+    cbResult = cbResult.wrapping_sub(1usize)
+  };
+  let uFullLanes: usize = cbResult.wrapping_div(8usize);
+  if uFullLanes > 0usize
+  {
+    SymCryptKeccakExtractLanes(pState, pbResult, uFullLanes);
+    pbResult = &mut pbResult[uFullLanes.wrapping_mul(8usize)..];
+    cbResult = cbResult.wrapping_sub(uFullLanes.wrapping_mul(8usize))
+  };
+  while
+  cbResult > 0usize
+  {
+    if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
+    {
+      SymCryptKeccakPermute(&mut (pState[0usize]).state);
+      (pState[0usize]).stateIndex = 0u32
+    };
+    pbResult[0usize] = SymCryptKeccakExtractByte(pState);
+    pbResult = &mut pbResult[1usize..];
+    cbResult = cbResult.wrapping_sub(1usize)
+  };
+  if bWipe != 0u8 { SymCryptKeccakReset(pState) }
+}
+
+#[inline] pub fn SymCryptKeccakExtractByte(
+  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE]
+) ->
+    u8
+{
+  let ret: u8 =
+      (((pState[0usize]).state[(pState[0usize]).stateIndex.wrapping_div(8u32) as usize]).wrapping_shr(
+        8u32.wrapping_mul((pState[0usize]).stateIndex.wrapping_rem(8u32))
+      )
+      &
+      255u64)
+      as
+      u8;
+  (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(1u32);
+  return ret
+}
+
+pub fn SymCryptKeccakExtractLanes(
+  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
+  pbResult: &mut [u8],
+  uLaneCount: usize
+)
+{
+  let mut uLaneIndex: u32 = (pState[0usize]).stateIndex.wrapping_div(8u32);
+  for i in 0usize..uLaneCount
+  {
+    if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
+    {
+      SymCryptKeccakPermute(&mut (pState[0usize]).state);
+      (pState[0usize]).stateIndex = 0u32;
+      uLaneIndex = 0u32
+    };
+    crate::symcrypt::SYMCRYPT_STORE_LSBFIRST64(
+      &mut pbResult[i.wrapping_mul(8usize)..],
+      (pState[0usize]).state[uLaneIndex as usize]
+    );
+    (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(8u32);
+    uLaneIndex = uLaneIndex.wrapping_add(1u32)
+  }
+}
+
+pub fn SymCryptKeccakInit(
+  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
+  inputBlockSize: u32,
+  paddingValue: u8
+)
+{
+  (pState[0usize]).inputBlockSize = inputBlockSize;
+  (pState[0usize]).paddingValue = paddingValue;
+  SymCryptKeccakReset(pState)
+}
 
 pub fn SymCryptKeccakPermute(pState: &mut [u64])
 {
@@ -620,76 +814,11 @@ pub fn SymCryptKeccakPermute(pState: &mut [u64])
   }
 }
 
-pub fn SymCryptKeccakInit(
-  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
-  inputBlockSize: u32,
-  paddingValue: u8
-)
-{
-  (pState[0usize]).inputBlockSize = inputBlockSize;
-  (pState[0usize]).paddingValue = paddingValue;
-  SymCryptKeccakReset(pState)
-}
-
 pub fn SymCryptKeccakReset(pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE])
 {
   for i in 0usize..25usize { (pState[0usize]).state[i] = 0u64 };
   (pState[0usize]).stateIndex = 0u32;
   (pState[0usize]).squeezeMode = 0u8
-}
-
-#[inline] pub fn SymCryptKeccakAppendByte(
-  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
-  val: u8
-)
-{
-  (pState[0usize]).state[(pState[0usize]).stateIndex.wrapping_div(8u32) as usize] ^=
-      (val as u64).wrapping_shl(8u32.wrapping_mul((pState[0usize]).stateIndex.wrapping_rem(8u32)));
-  (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(1u32)
-}
-
-#[inline] pub fn SymCryptKeccakAppendBytes(
-  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
-  pbBuffer: &[u8],
-  cbBuffer: usize
-)
-{
-  for i in 0usize..cbBuffer
-  {
-    (pState[0usize]).state[(pState[0usize]).stateIndex.wrapping_add(i as u32).wrapping_div(8u32)
-    as
-    usize] ^=
-        (pbBuffer[i] as u64).wrapping_shl(
-          8u64.wrapping_mul(
-            (pState[0usize]).stateIndex.wrapping_add(i as u32).wrapping_rem(8u32) as u64
-          )
-          as
-          u32
-        )
-  };
-  (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(cbBuffer as u32)
-}
-
-pub fn SymCryptKeccakAppendLanes(
-  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
-  pbData: &[u8],
-  uLaneCount: usize
-)
-{
-  let mut uLaneIndex: u32 = (pState[0usize]).stateIndex.wrapping_div(8u32);
-  for i in 0usize..uLaneCount
-  {
-    (pState[0usize]).state[uLaneIndex as usize] ^=
-        crate::symcrypt::SYMCRYPT_LOAD_LSBFIRST64(&pbData[i.wrapping_mul(8usize)..]);
-    (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(8u32);
-    uLaneIndex = uLaneIndex.wrapping_add(1u32);
-    if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
-    {
-      SymCryptKeccakPermute(&mut (pState[0usize]).state);
-      (pState[0usize]).stateIndex = 0u32;
-      uLaneIndex = 0u32
-    }
-  }
 }
 
 pub fn SymCryptKeccakZeroAppendBlock(
@@ -698,133 +827,4 @@ pub fn SymCryptKeccakZeroAppendBlock(
 {
   SymCryptKeccakPermute(&mut (pState[0usize]).state);
   (pState[0usize]).stateIndex = 0u32
-}
-
-pub fn SymCryptKeccakAppend(
-  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
-  mut pbData: &[u8],
-  mut cbData: usize
-)
-{
-  if (pState[0usize]).squeezeMode != 0u8 { SymCryptKeccakReset(pState) };
-  while
-  cbData > 0usize && (pState[0usize]).stateIndex & 7u32 != 0u32
-  {
-    SymCryptKeccakAppendByte(pState, pbData[0usize]);
-    pbData = &pbData[1usize..];
-    cbData = cbData.wrapping_sub(1usize)
-  };
-  if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
-  {
-    SymCryptKeccakPermute(&mut (pState[0usize]).state);
-    (pState[0usize]).stateIndex = 0u32
-  };
-  let uFullLanes: usize = cbData.wrapping_div(8usize);
-  if uFullLanes > 0usize
-  {
-    SymCryptKeccakAppendLanes(pState, pbData, uFullLanes);
-    pbData = &pbData[uFullLanes.wrapping_mul(8usize)..];
-    cbData = cbData.wrapping_sub(uFullLanes.wrapping_mul(8usize))
-  };
-  SymCryptKeccakAppendBytes(pState, pbData, cbData)
-}
-
-pub fn SymCryptKeccakApplyPadding(
-  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE]
-)
-{
-  let uLanePos: u32 = (pState[0usize]).stateIndex.wrapping_div(8u32);
-  let uBytePos: u32 = (pState[0usize]).stateIndex.wrapping_rem(8u32);
-  (pState[0usize]).state[uLanePos as usize] ^=
-      ((pState[0usize]).paddingValue as u64).wrapping_shl(8u32.wrapping_mul(uBytePos));
-  (pState[0usize]).state[(pState[0usize]).inputBlockSize.wrapping_div(8u32).wrapping_sub(1u32)
-  as
-  usize] ^=
-      1u64.wrapping_shl(63u32);
-  SymCryptKeccakPermute(&mut (pState[0usize]).state);
-  (pState[0usize]).stateIndex = 0u32;
-  (pState[0usize]).squeezeMode = 1u8
-}
-
-#[inline] pub fn SymCryptKeccakExtractByte(
-  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE]
-) ->
-    u8
-{
-  let ret: u8 =
-      (((pState[0usize]).state[(pState[0usize]).stateIndex.wrapping_div(8u32) as usize]).wrapping_shr(
-        8u32.wrapping_mul((pState[0usize]).stateIndex.wrapping_rem(8u32))
-      )
-      &
-      255u64)
-      as
-      u8;
-  (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(1u32);
-  return ret
-}
-
-pub fn SymCryptKeccakExtractLanes(
-  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
-  pbResult: &mut [u8],
-  uLaneCount: usize
-)
-{
-  let mut uLaneIndex: u32 = (pState[0usize]).stateIndex.wrapping_div(8u32);
-  for i in 0usize..uLaneCount
-  {
-    if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
-    {
-      SymCryptKeccakPermute(&mut (pState[0usize]).state);
-      (pState[0usize]).stateIndex = 0u32;
-      uLaneIndex = 0u32
-    };
-    crate::symcrypt::SYMCRYPT_STORE_LSBFIRST64(
-      &mut pbResult[i.wrapping_mul(8usize)..],
-      (pState[0usize]).state[uLaneIndex as usize]
-    );
-    (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(8u32);
-    uLaneIndex = uLaneIndex.wrapping_add(1u32)
-  }
-}
-
-pub fn SymCryptKeccakExtract(
-  pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE],
-  mut pbResult: &mut [u8],
-  mut cbResult: usize,
-  bWipe: u8
-)
-{
-  if (pState[0usize]).squeezeMode == 0u8 { SymCryptKeccakApplyPadding(pState) };
-  if cbResult > 0usize && (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
-  {
-    SymCryptKeccakPermute(&mut (pState[0usize]).state);
-    (pState[0usize]).stateIndex = 0u32
-  };
-  while
-  cbResult > 0usize && (pState[0usize]).stateIndex & 7u32 != 0u32
-  {
-    pbResult[0usize] = SymCryptKeccakExtractByte(pState);
-    pbResult = &pbResult[1usize..];
-    cbResult = cbResult.wrapping_sub(1usize)
-  };
-  let uFullLanes: usize = cbResult.wrapping_div(8usize);
-  if uFullLanes > 0usize
-  {
-    SymCryptKeccakExtractLanes(pState, pbResult, uFullLanes);
-    pbResult = &pbResult[uFullLanes.wrapping_mul(8usize)..];
-    cbResult = cbResult.wrapping_sub(uFullLanes.wrapping_mul(8usize))
-  };
-  while
-  cbResult > 0usize
-  {
-    if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
-    {
-      SymCryptKeccakPermute(&mut (pState[0usize]).state);
-      (pState[0usize]).stateIndex = 0u32
-    };
-    pbResult[0usize] = SymCryptKeccakExtractByte(pState);
-    pbResult = &pbResult[1usize..];
-    cbResult = cbResult.wrapping_sub(1usize)
-  };
-  if bWipe != 0u8 { SymCryptKeccakReset(pState) }
 }
