@@ -6,6 +6,7 @@ pub mod sha3_256;
 pub mod sha3_384;
 pub mod sha3_512;
 pub mod shake;
+// pub mod ffi;
 
 #[cfg(test)]
 pub mod test;

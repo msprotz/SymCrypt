@@ -119,6 +119,7 @@ SymCryptShake256Selftest(void)
     }
 }
 
+#ifndef SCYLLA
 
 //
 //  CSHAKE128
@@ -343,3 +344,5 @@ SymCryptKeccakAppendEncodedString(
 }
 
 #endif
+
+#endif // SCYLLA

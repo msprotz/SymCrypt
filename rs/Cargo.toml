@@ -10,9 +10,9 @@ edition = "2021"
 # zeroize = "1.8.1"
 
 [lib]
-# crate-type = ["cdylib"]
+crate-type = ["cdylib"]
 
 [profile.release]
 # TODO: try "fat" (with quotes) instead of true
-# lto = true
-# codegen-units = 1
+lto = true
+codegen-units = 1
