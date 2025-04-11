@@ -913,6 +913,7 @@ typedef const SYMCRYPT_SHA512_256_STATE *PCSYMCRYPT_SHA512_256_STATE;
 // Data structure that stores the state of an ongoing SHA-3 derived algorithm computation.
 //
 
+__attribute__((annotate("scylla_default")))
 typedef SYMCRYPT_ALIGN_STRUCT _SYMCRYPT_KECCAK_STATE
 {
     SYMCRYPT_ALIGN  UINT64  state[25];      // state for Keccak-f[1600] permutation
@@ -928,6 +929,7 @@ typedef const SYMCRYPT_KECCAK_STATE *PCSYMCRYPT_KECCAK_STATE;
 //
 // Data structure that stores the state of an ongoing SHA3-224 computation.
 //
+__attribute__((annotate("scylla_default")))
 typedef SYMCRYPT_ALIGN_STRUCT _SYMCRYPT_SHA3_224_STATE
 {
     SYMCRYPT_KECCAK_STATE   ks;
@@ -940,6 +942,7 @@ typedef const SYMCRYPT_SHA3_224_STATE* PCSYMCRYPT_SHA3_224_STATE;
 //
 // Data structure that stores the state of an ongoing SHA3-256 computation.
 //
+__attribute__((annotate("scylla_default")))
 typedef SYMCRYPT_ALIGN_STRUCT _SYMCRYPT_SHA3_256_STATE
 {
     SYMCRYPT_KECCAK_STATE   ks;
@@ -952,6 +955,7 @@ typedef const SYMCRYPT_SHA3_256_STATE* PCSYMCRYPT_SHA3_256_STATE;
 //
 // Data structure that stores the state of an ongoing SHA3-384 computation.
 //
+__attribute__((annotate("scylla_default")))
 typedef SYMCRYPT_ALIGN_STRUCT _SYMCRYPT_SHA3_384_STATE
 {
     SYMCRYPT_KECCAK_STATE   ks;
@@ -964,6 +968,7 @@ typedef const SYMCRYPT_SHA3_384_STATE* PCSYMCRYPT_SHA3_384_STATE;
 //
 // Data structure that stores the state of an ongoing SHA3-512 computation.
 //
+__attribute__((annotate("scylla_default")))
 typedef SYMCRYPT_ALIGN_STRUCT _SYMCRYPT_SHA3_512_STATE
 {
     SYMCRYPT_KECCAK_STATE   ks;
@@ -976,6 +981,7 @@ typedef const SYMCRYPT_SHA3_512_STATE* PCSYMCRYPT_SHA3_512_STATE;
 //
 // Data structure that stores the state of an ongoing SHAKE128 computation.
 //
+__attribute__((annotate("scylla_default")))
 typedef SYMCRYPT_ALIGN_STRUCT _SYMCRYPT_SHAKE128_STATE
 {
     SYMCRYPT_KECCAK_STATE   ks;
@@ -988,6 +994,7 @@ typedef const SYMCRYPT_SHAKE128_STATE* PCSYMCRYPT_SHAKE128_STATE;
 //
 // Data structure that stores the state of an ongoing SHAKE256 computation.
 //
+__attribute__((annotate("scylla_default")))
 typedef SYMCRYPT_ALIGN_STRUCT _SYMCRYPT_SHAKE256_STATE
 {
     SYMCRYPT_KECCAK_STATE   ks;
@@ -1000,6 +1007,7 @@ typedef const SYMCRYPT_SHAKE256_STATE* PCSYMCRYPT_SHAKE256_STATE;
 //
 // Data structure that stores the state of an ongoing CSHAKE128 computation.
 //
+__attribute__((annotate("scylla_default")))
 typedef SYMCRYPT_ALIGN_STRUCT _SYMCRYPT_CSHAKE128_STATE
 {
     SYMCRYPT_KECCAK_STATE   ks;
@@ -1012,6 +1020,7 @@ typedef const SYMCRYPT_CSHAKE128_STATE* PCSYMCRYPT_CSHAKE128_STATE;
 //
 // Data structure that stores the state of an ongoing CSHAKE256 computation.
 //
+__attribute__((annotate("scylla_default")))
 typedef SYMCRYPT_ALIGN_STRUCT _SYMCRYPT_CSHAKE256_STATE
 {
     SYMCRYPT_KECCAK_STATE   ks;

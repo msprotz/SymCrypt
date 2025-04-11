@@ -4,6 +4,23 @@
 #![allow(unused_assignments)]
 #![allow(unreachable_patterns)]
 
+pub fn SymCryptSha3_224(pbData: &[u8], cbData: usize, pbResult: &mut [u8])
+{
+  let mut state: crate::symcrypt_internal::SYMCRYPT_SHA3_224_STATE = Default::default();
+  SymCryptSha3_224Init(
+    std::slice::from_mut::<crate::symcrypt_internal::SYMCRYPT_SHA3_224_STATE>(&mut state)
+  );
+  SymCryptSha3_224Append(
+    std::slice::from_mut::<crate::symcrypt_internal::SYMCRYPT_SHA3_224_STATE>(&mut state),
+    pbData,
+    cbData
+  );
+  SymCryptSha3_224Result(
+    std::slice::from_mut::<crate::symcrypt_internal::SYMCRYPT_SHA3_224_STATE>(&mut state),
+    pbResult
+  )
+}
+
 pub fn SymCryptSha3_224Append(
   pState: &mut [crate::symcrypt_internal::SYMCRYPT_SHA3_224_STATE],
   pbData: &[u8],

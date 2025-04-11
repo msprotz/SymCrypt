@@ -6,7 +6,7 @@
 
 pub fn SymCryptShake128(pbData: &[u8], cbData: usize, pbResult: &mut [u8], cbResult: usize)
 {
-  let mut state: crate::symcrypt_internal::SYMCRYPT_SHAKE128_STATE;
+  let mut state: crate::symcrypt_internal::SYMCRYPT_SHAKE128_STATE = Default::default();
   SymCryptShake128Init(
     std::slice::from_mut::<crate::symcrypt_internal::SYMCRYPT_SHAKE128_STATE>(&mut state)
   );
@@ -92,7 +92,7 @@ pub fn SymCryptShake128StateCopy(
 
 pub fn SymCryptShake256(pbData: &[u8], cbData: usize, pbResult: &mut [u8], cbResult: usize)
 {
-  let mut state: crate::symcrypt_internal::SYMCRYPT_SHAKE256_STATE;
+  let mut state: crate::symcrypt_internal::SYMCRYPT_SHAKE256_STATE = Default::default();
   SymCryptShake256Init(
     std::slice::from_mut::<crate::symcrypt_internal::SYMCRYPT_SHAKE256_STATE>(&mut state)
   );

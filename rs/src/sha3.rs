@@ -132,14 +132,14 @@ pub fn SymCryptKeccakExtract(
   cbResult > 0usize && (pState[0usize]).stateIndex & 7u32 != 0u32
   {
     pbResult[0usize] = SymCryptKeccakExtractByte(pState);
-    pbResult = &pbResult[1usize..];
+    pbResult = &mut pbResult[1usize..];
     cbResult = cbResult.wrapping_sub(1usize)
   };
   let uFullLanes: usize = cbResult.wrapping_div(8usize);
   if uFullLanes > 0usize
   {
     SymCryptKeccakExtractLanes(pState, pbResult, uFullLanes);
-    pbResult = &pbResult[uFullLanes.wrapping_mul(8usize)..];
+    pbResult = &mut pbResult[uFullLanes.wrapping_mul(8usize)..];
     cbResult = cbResult.wrapping_sub(uFullLanes.wrapping_mul(8usize))
   };
   while
@@ -151,7 +151,7 @@ pub fn SymCryptKeccakExtract(
       (pState[0usize]).stateIndex = 0u32
     };
     pbResult[0usize] = SymCryptKeccakExtractByte(pState);
-    pbResult = &pbResult[1usize..];
+    pbResult = &mut pbResult[1usize..];
     cbResult = cbResult.wrapping_sub(1usize)
   };
   if bWipe != 0u8 { SymCryptKeccakReset(pState) }

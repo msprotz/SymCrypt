@@ -4,7 +4,7 @@
 #![allow(unused_assignments)]
 #![allow(unreachable_patterns)]
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(Default, PartialEq, Clone, Copy)]
 pub struct SYMCRYPT_KECCAK_STATE
 {
   pub state: [u64; 25],
@@ -14,26 +14,26 @@ pub struct SYMCRYPT_KECCAK_STATE
   pub squeezeMode: u8
 }
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(Default, PartialEq, Clone, Copy)]
 pub struct SYMCRYPT_SHA3_224_STATE
 { pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(Default, PartialEq, Clone, Copy)]
 pub struct SYMCRYPT_SHA3_256_STATE
 { pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(Default, PartialEq, Clone, Copy)]
 pub struct SYMCRYPT_SHA3_384_STATE
 { pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(Default, PartialEq, Clone, Copy)]
 pub struct SYMCRYPT_SHA3_512_STATE
 { pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(Default, PartialEq, Clone, Copy)]
 pub struct SYMCRYPT_SHAKE128_STATE
 { pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(Default, PartialEq, Clone, Copy)]
 pub struct SYMCRYPT_SHAKE256_STATE
 { pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
