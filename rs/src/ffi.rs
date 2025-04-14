@@ -51,7 +51,3 @@ SymCryptSha3_256StateCopy(pSrc: PCSYMCRYPT_SHA3_256_STATE, pDst: PSYMCRYPT_SHA3_
     let dst = unsafe { std::slice::from_raw_parts_mut(pDst, 1) };
     crate::sha3_256::SymCryptSha3_256StateCopy(src, dst);
 }
-
-#[no_mangle]
-pub extern "C" fn
-SymCryptModuleInit() {}

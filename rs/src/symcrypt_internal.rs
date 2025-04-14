@@ -4,6 +4,8 @@
 #![allow(unused_assignments)]
 #![allow(unreachable_patterns)]
 
+#[repr(C)]
+#[repr(align(16))]
 #[derive(Default, PartialEq, Clone, Copy)]
 pub struct SYMCRYPT_KECCAK_STATE
 {
@@ -18,6 +20,8 @@ pub struct SYMCRYPT_KECCAK_STATE
 pub struct SYMCRYPT_SHA3_224_STATE
 { pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
 
+#[repr(C)]
+#[repr(align(16))]
 #[derive(Default, PartialEq, Clone, Copy)]
 pub struct SYMCRYPT_SHA3_256_STATE
 { pub ks: SYMCRYPT_KECCAK_STATE, pub magic: usize }
