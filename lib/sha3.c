@@ -51,99 +51,103 @@ static UINT64 KeccakIotaK[24] = {
 };
 
 // XOR sum of column c of the state
-#define KECCAK_COLUMN_SUM(state, c) \
-    (state[0 + (c)] ^ state[5 + (c)] ^ state[10 + (c)] ^ state[15 + (c)] ^ state[20 + (c)])
+
+static __attribute__((always_inline)) UINT64 KECCAK_COLUMN_SUM(UINT64 *state, size_t c) {
+    return (state[0 + (c)] ^ state[5 + (c)] ^ state[10 + (c)] ^ state[15 + (c)] ^ state[20 + (c)]);
+}
 
 // XOR w to all the lanes in column c of the state
 // 
 // Note: The expression to be XORed is copied to a temporary variable to avoid reevaluation
-#define KECCAK_COLUMN_UPDATE(state, c, w) { \
-    UINT64 t = (w); \
-    state[ 0 + (c)] ^= t; \
-    state[ 5 + (c)] ^= t; \
-    state[10 + (c)] ^= t; \
-    state[15 + (c)] ^= t; \
-    state[20 + (c)] ^= t; \
+static __attribute__((always_inline)) void KECCAK_COLUMN_UPDATE(UINT64 *state, size_t c, UINT64 w) {
+    UINT64 t = (w);
+    state[ 0 + (c)] ^= t;
+    state[ 5 + (c)] ^= t;
+    state[10 + (c)] ^= t;
+    state[15 + (c)] ^= t;
+    state[20 + (c)] ^= t;
 }
 
 // Apply Theta transformation to the state
-#define KECCAK_THETA(state) { \
-    UINT64 colSum[5] = { 0 }; \
-    colSum[0] = KECCAK_COLUMN_SUM(state, 0); \
-    colSum[1] = KECCAK_COLUMN_SUM(state, 1); \
-    colSum[2] = KECCAK_COLUMN_SUM(state, 2); \
-    colSum[3] = KECCAK_COLUMN_SUM(state, 3); \
-    colSum[4] = KECCAK_COLUMN_SUM(state, 4); \
-    KECCAK_COLUMN_UPDATE(state, 0, colSum[4] ^ ROL64(colSum[1], 1)); \
-    KECCAK_COLUMN_UPDATE(state, 1, colSum[0] ^ ROL64(colSum[2], 1)); \
-    KECCAK_COLUMN_UPDATE(state, 2, colSum[1] ^ ROL64(colSum[3], 1)); \
-    KECCAK_COLUMN_UPDATE(state, 3, colSum[2] ^ ROL64(colSum[4], 1)); \
-    KECCAK_COLUMN_UPDATE(state, 4, colSum[3] ^ ROL64(colSum[0], 1)); \
+static __attribute__((always_inline)) void KECCAK_THETA(UINT64 *state) {
+    UINT64 colSum[5] = { 0 };
+    colSum[0] = KECCAK_COLUMN_SUM(state, 0);
+    colSum[1] = KECCAK_COLUMN_SUM(state, 1);
+    colSum[2] = KECCAK_COLUMN_SUM(state, 2);
+    colSum[3] = KECCAK_COLUMN_SUM(state, 3);
+    colSum[4] = KECCAK_COLUMN_SUM(state, 4);
+    KECCAK_COLUMN_UPDATE(state, 0, colSum[4] ^ ROL64(colSum[1], 1));
+    KECCAK_COLUMN_UPDATE(state, 1, colSum[0] ^ ROL64(colSum[2], 1));
+    KECCAK_COLUMN_UPDATE(state, 2, colSum[1] ^ ROL64(colSum[3], 1));
+    KECCAK_COLUMN_UPDATE(state, 3, colSum[2] ^ ROL64(colSum[4], 1));
+    KECCAK_COLUMN_UPDATE(state, 4, colSum[3] ^ ROL64(colSum[0], 1));
 }
 
 // Apply Rho transformation to row r of the state
-#define KECCAK_RHO_ROW(state, r) { \
-    state[5 * (r) + 0] = ROL64(state[5 * (r) + 0], KeccakRhoK[5 * (r) + 0]); \
-    state[5 * (r) + 1] = ROL64(state[5 * (r) + 1], KeccakRhoK[5 * (r) + 1]); \
-    state[5 * (r) + 2] = ROL64(state[5 * (r) + 2], KeccakRhoK[5 * (r) + 2]); \
-    state[5 * (r) + 3] = ROL64(state[5 * (r) + 3], KeccakRhoK[5 * (r) + 3]); \
-    state[5 * (r) + 4] = ROL64(state[5 * (r) + 4], KeccakRhoK[5 * (r) + 4]); \
+static __attribute__((always_inline)) void KECCAK_RHO_ROW(UINT64 *state, int r) {
+    state[5 * (r) + 0] = ROL64(state[5 * (r) + 0], KeccakRhoK[5 * (r) + 0]);
+    state[5 * (r) + 1] = ROL64(state[5 * (r) + 1], KeccakRhoK[5 * (r) + 1]);
+    state[5 * (r) + 2] = ROL64(state[5 * (r) + 2], KeccakRhoK[5 * (r) + 2]);
+    state[5 * (r) + 3] = ROL64(state[5 * (r) + 3], KeccakRhoK[5 * (r) + 3]);
+    state[5 * (r) + 4] = ROL64(state[5 * (r) + 4], KeccakRhoK[5 * (r) + 4]);
 }
 
 // Apply Rho transformation to row 0 of the state
 // 
 // The first row contains a rotation by 0 on the first lane that uses a shift 
 // by 64 which we want to avoid. Rho operation below omits the rotation on the first lane.
-#define KECCAK_RHO_ROW0(state) { \
-    state[1] = ROL64(state[1], KeccakRhoK[1]); \
-    state[2] = ROL64(state[2], KeccakRhoK[2]); \
-    state[3] = ROL64(state[3], KeccakRhoK[3]); \
-    state[4] = ROL64(state[4], KeccakRhoK[4]); \
+static __attribute__((always_inline)) void KECCAK_RHO_ROW0(UINT64 *state) {
+    state[1] = ROL64(state[1], KeccakRhoK[1]);
+    state[2] = ROL64(state[2], KeccakRhoK[2]);
+    state[3] = ROL64(state[3], KeccakRhoK[3]);
+    state[4] = ROL64(state[4], KeccakRhoK[4]);
 }
 
 // Apply Rho transformation to the state
-#define KECCAK_RHO(state) { \
-    KECCAK_RHO_ROW0(state); \
-    KECCAK_RHO_ROW(state, 1); \
-    KECCAK_RHO_ROW(state, 2); \
-    KECCAK_RHO_ROW(state, 3); \
-    KECCAK_RHO_ROW(state, 4); \
+static __attribute__((always_inline)) void KECCAK_RHO(UINT64 *state) {
+    KECCAK_RHO_ROW0(state);
+    KECCAK_RHO_ROW(state, 1);
+    KECCAK_RHO_ROW(state, 2);
+    KECCAK_RHO_ROW(state, 3);
+    KECCAK_RHO_ROW(state, 4);
 }
 
 // Apply Pi transformation to the state
-#define KECCAK_PI(state) { \
-    UINT64 t  = state[ 1]; state[ 1] = state[ 6]; state[ 6] = state[ 9]; state[ 9] = state[22]; state[22] = state[14]; \
-    state[14] = state[20]; state[20] = state[ 2]; state[ 2] = state[12]; state[12] = state[13]; state[13] = state[19]; \
-    state[19] = state[23]; state[23] = state[15]; state[15] = state[ 4]; state[ 4] = state[24]; state[24] = state[21]; \
-    state[21] = state[ 8]; state[ 8] = state[16]; state[16] = state[ 5]; state[ 5] = state[ 3]; state[ 3] = state[18]; \
-    state[18] = state[17]; state[17] = state[11]; state[11] = state[ 7]; state[ 7] = state[10]; state[10] = t; \
+static __attribute__((always_inline)) void KECCAK_PI(UINT64* state) {
+    UINT64 t  = state[ 1]; state[ 1] = state[ 6]; state[ 6] = state[ 9]; state[ 9] = state[22]; state[22] = state[14];
+    state[14] = state[20]; state[20] = state[ 2]; state[ 2] = state[12]; state[12] = state[13]; state[13] = state[19];
+    state[19] = state[23]; state[23] = state[15]; state[15] = state[ 4]; state[ 4] = state[24]; state[24] = state[21];
+    state[21] = state[ 8]; state[ 8] = state[16]; state[16] = state[ 5]; state[ 5] = state[ 3]; state[ 3] = state[18];
+    state[18] = state[17]; state[17] = state[11]; state[11] = state[ 7]; state[ 7] = state[10]; state[10] = t;
 }
 
 // Apply Chi transformation on row r of state
-#define KECCAK_CHI_ROW(state, r) { \
-    UINT64 t1 = state[5 * (r) + 0] ^ (~state[5 * (r) + 1] & state[5 * (r) + 2]); \
-    UINT64 t2 = state[5 * (r) + 1] ^ (~state[5 * (r) + 2] & state[5 * (r) + 3]); \
-    state[5 * (r) + 2] = state[5 * (r) + 2] ^ (~state[5 * (r) + 3] & state[5 * (r) + 4]); \
-    state[5 * (r) + 3] = state[5 * (r) + 3] ^ (~state[5 * (r) + 4] & state[5 * (r) + 0]); \
-    state[5 * (r) + 4] = state[5 * (r) + 4] ^ (~state[5 * (r) + 0] & state[5 * (r) + 1]); \
-    state[5 * (r) + 0] = t1; \
-    state[5 * (r) + 1] = t2; \
+static __attribute__((always_inline)) void KECCAK_CHI_ROW(UINT64* state, int r) {
+    UINT64 t1 = state[5 * (r) + 0] ^ (~state[5 * (r) + 1] & state[5 * (r) + 2]);
+    UINT64 t2 = state[5 * (r) + 1] ^ (~state[5 * (r) + 2] & state[5 * (r) + 3]);
+    state[5 * (r) + 2] = state[5 * (r) + 2] ^ (~state[5 * (r) + 3] & state[5 * (r) + 4]);
+    state[5 * (r) + 3] = state[5 * (r) + 3] ^ (~state[5 * (r) + 4] & state[5 * (r) + 0]);
+    state[5 * (r) + 4] = state[5 * (r) + 4] ^ (~state[5 * (r) + 0] & state[5 * (r) + 1]);
+    state[5 * (r) + 0] = t1;
+    state[5 * (r) + 1] = t2;
 }
 
 // Apply Chi transformation to state
-#define KECCAK_CHI(state) { \
-    KECCAK_CHI_ROW(state, 0); \
-    KECCAK_CHI_ROW(state, 1); \
-    KECCAK_CHI_ROW(state, 2); \
-    KECCAK_CHI_ROW(state, 3); \
-    KECCAK_CHI_ROW(state, 4); \
+static __attribute__((always_inline)) void KECCAK_CHI(UINT64 *state) {
+    KECCAK_CHI_ROW(state, 0);
+    KECCAK_CHI_ROW(state, 1);
+    KECCAK_CHI_ROW(state, 2);
+    KECCAK_CHI_ROW(state, 3);
+    KECCAK_CHI_ROW(state, 4);
 }
 
 // Add round constant to state
-#define KECCAK_IOTA(state, rnd) state[0] ^= KeccakIotaK[rnd]
+static __attribute__((always_inline)) void KECCAK_IOTA(UINT64 *state, int rnd) {
+  state[0] ^= KeccakIotaK[rnd];
+}
 
 // Perform one round of Keccak permutation on state
-#define KECCAK_PERM_ROUND(state, rnd) { \
+static __attribute__((always_inline)) void KECCAK_PERM_ROUND(UINT64* state, int rnd) { \
     KECCAK_THETA(state); \
     KECCAK_RHO(state); \
     KECCAK_PI(state); \
