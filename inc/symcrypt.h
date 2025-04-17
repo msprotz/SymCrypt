@@ -299,7 +299,7 @@ typedef enum _SYMCRYPT_DLGROUP_DH_SAFEPRIMETYPE {
 #define SYMCRYPT_LOAD_LSBFIRST32( p )   SYMCRYPT_INTERNAL_LOAD_LSBFIRST32( p )
 
 __attribute__((annotate("scylla_opaque")))
-static inline UINT64 SYMCRYPT_LOAD_LSBFIRST64(PUINT8 p ) {
+static inline UINT64 SYMCRYPT_LOAD_LSBFIRST64(const UINT8 *p ) {
   return SYMCRYPT_INTERNAL_LOAD_LSBFIRST64( p );
 }
 
