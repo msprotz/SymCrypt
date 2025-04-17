@@ -71,7 +71,7 @@
 #pragma GCC diagnostic ignored "-Wmultichar"
 
 #define C_ASSERT(e)                 typedef char __C_ASSERT__[(e)?1:-1]
-#define SYMCRYPT_ANYSIZE_ARRAY               1
+#define SYMCRYPT_ANYSIZE_ARRAY               
 #define FORCEINLINE                 static inline //__inline__ __attribute__ ((always_inline))
 #define SYMCRYPT_NOINLINE           __attribute__ ((noinline))
 #define SYMCRYPT_UNALIGNED
