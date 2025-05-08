@@ -55,7 +55,7 @@
 #if SYMCRYPT_MS_VC
 
 // This should go somewhere else. Same in the other #if branches.
-#define SYMCRYPT_ANYSIZE_ARRAY               1
+#define SYMCRYPT_ANYSIZE_ARRAY
 #define SYMCRYPT_NOINLINE __declspec(noinline)
 #define SYMCRYPT_CDECL __cdecl
 #define SYMCRYPT_FASTCALL __fastcall

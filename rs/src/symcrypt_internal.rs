@@ -3,6 +3,7 @@
 #![allow(non_camel_case_types)]
 #![allow(unused_assignments)]
 #![allow(unreachable_patterns)]
+#![allow(unused_mut)]
 
 #[derive(Default, PartialEq, Clone, Copy)]
 #[repr(align(16))]

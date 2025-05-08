@@ -3,6 +3,7 @@
 #![allow(non_camel_case_types)]
 #![allow(unused_assignments)]
 #![allow(unreachable_patterns)]
+#![allow(unused_mut)]
 
 pub fn SymCryptSha3_224(pbData: &[u8], cbData: usize, pbResult: &mut [u8])
 {

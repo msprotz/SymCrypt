@@ -3,6 +3,7 @@
 #![allow(non_camel_case_types)]
 #![allow(unused_assignments)]
 #![allow(unreachable_patterns)]
+#![allow(unused_mut)]
 
 #[inline(always)]
 pub
@@ -151,9 +152,7 @@ KECCAK_RHO_ROW(state: &mut [u64], r: i32)
       )
       |
       (state[5i32.wrapping_mul(r).wrapping_add(0i32) as usize]).wrapping_shr(
-        64i32.wrapping_sub(KeccakRhoK[5i32.wrapping_mul(r).wrapping_add(0i32) as usize] as i32)
-        as
-        u32
+        64u32.wrapping_sub(KeccakRhoK[5i32.wrapping_mul(r).wrapping_add(0i32) as usize] as u32)
       ))
       as
       u64;
@@ -163,9 +162,7 @@ KECCAK_RHO_ROW(state: &mut [u64], r: i32)
       )
       |
       (state[5i32.wrapping_mul(r).wrapping_add(1i32) as usize]).wrapping_shr(
-        64i32.wrapping_sub(KeccakRhoK[5i32.wrapping_mul(r).wrapping_add(1i32) as usize] as i32)
-        as
-        u32
+        64u32.wrapping_sub(KeccakRhoK[5i32.wrapping_mul(r).wrapping_add(1i32) as usize] as u32)
       ))
       as
       u64;
@@ -175,9 +172,7 @@ KECCAK_RHO_ROW(state: &mut [u64], r: i32)
       )
       |
       (state[5i32.wrapping_mul(r).wrapping_add(2i32) as usize]).wrapping_shr(
-        64i32.wrapping_sub(KeccakRhoK[5i32.wrapping_mul(r).wrapping_add(2i32) as usize] as i32)
-        as
-        u32
+        64u32.wrapping_sub(KeccakRhoK[5i32.wrapping_mul(r).wrapping_add(2i32) as usize] as u32)
       ))
       as
       u64;
@@ -187,9 +182,7 @@ KECCAK_RHO_ROW(state: &mut [u64], r: i32)
       )
       |
       (state[5i32.wrapping_mul(r).wrapping_add(3i32) as usize]).wrapping_shr(
-        64i32.wrapping_sub(KeccakRhoK[5i32.wrapping_mul(r).wrapping_add(3i32) as usize] as i32)
-        as
-        u32
+        64u32.wrapping_sub(KeccakRhoK[5i32.wrapping_mul(r).wrapping_add(3i32) as usize] as u32)
       ))
       as
       u64;
@@ -199,9 +192,7 @@ KECCAK_RHO_ROW(state: &mut [u64], r: i32)
       )
       |
       (state[5i32.wrapping_mul(r).wrapping_add(4i32) as usize]).wrapping_shr(
-        64i32.wrapping_sub(KeccakRhoK[5i32.wrapping_mul(r).wrapping_add(4i32) as usize] as i32)
-        as
-        u32
+        64u32.wrapping_sub(KeccakRhoK[5i32.wrapping_mul(r).wrapping_add(4i32) as usize] as u32)
       ))
       as
       u64
@@ -215,25 +206,25 @@ KECCAK_RHO_ROW0(state: &mut [u64])
   state[1usize] =
       ((state[1usize]).wrapping_shl(KeccakRhoK[1usize] as u32)
       |
-      (state[1usize]).wrapping_shr(64i32.wrapping_sub(KeccakRhoK[1usize] as i32) as u32))
+      (state[1usize]).wrapping_shr(64u32.wrapping_sub(KeccakRhoK[1usize] as u32)))
       as
       u64;
   state[2usize] =
       ((state[2usize]).wrapping_shl(KeccakRhoK[2usize] as u32)
       |
-      (state[2usize]).wrapping_shr(64i32.wrapping_sub(KeccakRhoK[2usize] as i32) as u32))
+      (state[2usize]).wrapping_shr(64u32.wrapping_sub(KeccakRhoK[2usize] as u32)))
       as
       u64;
   state[3usize] =
       ((state[3usize]).wrapping_shl(KeccakRhoK[3usize] as u32)
       |
-      (state[3usize]).wrapping_shr(64i32.wrapping_sub(KeccakRhoK[3usize] as i32) as u32))
+      (state[3usize]).wrapping_shr(64u32.wrapping_sub(KeccakRhoK[3usize] as u32)))
       as
       u64;
   state[4usize] =
       ((state[4usize]).wrapping_shl(KeccakRhoK[4usize] as u32)
       |
-      (state[4usize]).wrapping_shr(64i32.wrapping_sub(KeccakRhoK[4usize] as i32) as u32))
+      (state[4usize]).wrapping_shr(64u32.wrapping_sub(KeccakRhoK[4usize] as u32)))
       as
       u64
 }
@@ -351,7 +342,7 @@ pub fn SymCryptKeccakAppend(
   val: u8
 )
 {
-  (pState[0usize]).state[(pState[0usize]).stateIndex.wrapping_div(8u32) as usize] ^=
+  (pState[0usize]).state[((pState[0usize]).stateIndex as usize).wrapping_div(8usize)] ^=
       (val as u64).wrapping_shl(8u32.wrapping_mul((pState[0usize]).stateIndex.wrapping_rem(8u32)));
   (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(1u32)
 }
@@ -364,12 +355,12 @@ pub fn SymCryptKeccakAppend(
 {
   for i in 0usize..cbBuffer
   {
-    (pState[0usize]).state[(pState[0usize]).stateIndex.wrapping_add(i as u32).wrapping_div(8u32)
-    as
-    usize] ^=
+    (pState[0usize]).state[((pState[0usize]).stateIndex as usize).wrapping_add(i).wrapping_div(
+      8usize
+    )] ^=
         (pbBuffer[i] as u64).wrapping_shl(
           8u64.wrapping_mul(
-            (pState[0usize]).stateIndex.wrapping_add(i as u32).wrapping_rem(8u32) as u64
+            ((pState[0usize]).stateIndex as usize).wrapping_add(i).wrapping_rem(8usize) as u64
           )
           as
           u32
@@ -384,12 +375,13 @@ pub fn SymCryptKeccakAppendLanes(
   uLaneCount: usize
 )
 {
-  let mut uLaneIndex: u32 = (pState[0usize]).stateIndex.wrapping_div(8u32);
+  let mut uLaneIndex: u32 = ((pState[0usize]).stateIndex as usize).wrapping_div(8usize) as u32;
   for i in 0usize..uLaneCount
   {
     (pState[0usize]).state[uLaneIndex as usize] ^=
         crate::symcrypt::SYMCRYPT_LOAD_LSBFIRST64(&pbData[i.wrapping_mul(8usize)..]);
-    (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(8u32);
+    (pState[0usize]).stateIndex =
+        ((pState[0usize]).stateIndex as usize).wrapping_add(8usize) as u32;
     uLaneIndex = uLaneIndex.wrapping_add(1u32);
     if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
     {
@@ -404,13 +396,13 @@ pub fn SymCryptKeccakApplyPadding(
   pState: &mut [crate::symcrypt_internal::SYMCRYPT_KECCAK_STATE]
 )
 {
-  let uLanePos: u32 = (pState[0usize]).stateIndex.wrapping_div(8u32);
-  let uBytePos: u32 = (pState[0usize]).stateIndex.wrapping_rem(8u32);
+  let uLanePos: u32 = ((pState[0usize]).stateIndex as usize).wrapping_div(8usize) as u32;
+  let uBytePos: u32 = ((pState[0usize]).stateIndex as usize).wrapping_rem(8usize) as u32;
   (pState[0usize]).state[uLanePos as usize] ^=
       ((pState[0usize]).paddingValue as u64).wrapping_shl(8u32.wrapping_mul(uBytePos));
-  (pState[0usize]).state[(pState[0usize]).inputBlockSize.wrapping_div(8u32).wrapping_sub(1u32)
-  as
-  usize] ^=
+  (pState[0usize]).state[((pState[0usize]).inputBlockSize as usize).wrapping_div(8usize).wrapping_sub(
+    1usize
+  )] ^=
       1u64.wrapping_shl(63u32);
   SymCryptKeccakPermute(&mut (pState[0usize]).state);
   (pState[0usize]).stateIndex = 0u32;
@@ -465,7 +457,7 @@ pub fn SymCryptKeccakExtract(
     u8
 {
   let ret: u8 =
-      (((pState[0usize]).state[(pState[0usize]).stateIndex.wrapping_div(8u32) as usize]).wrapping_shr(
+      (((pState[0usize]).state[((pState[0usize]).stateIndex as usize).wrapping_div(8usize)]).wrapping_shr(
         8u32.wrapping_mul((pState[0usize]).stateIndex.wrapping_rem(8u32))
       )
       &
@@ -482,7 +474,7 @@ pub fn SymCryptKeccakExtractLanes(
   uLaneCount: usize
 )
 {
-  let mut uLaneIndex: u32 = (pState[0usize]).stateIndex.wrapping_div(8u32);
+  let mut uLaneIndex: u32 = ((pState[0usize]).stateIndex as usize).wrapping_div(8usize) as u32;
   for i in 0usize..uLaneCount
   {
     if (pState[0usize]).stateIndex == (pState[0usize]).inputBlockSize
@@ -495,7 +487,8 @@ pub fn SymCryptKeccakExtractLanes(
       &mut pbResult[i.wrapping_mul(8usize)..],
       (pState[0usize]).state[uLaneIndex as usize]
     );
-    (pState[0usize]).stateIndex = (pState[0usize]).stateIndex.wrapping_add(8u32);
+    (pState[0usize]).stateIndex =
+        ((pState[0usize]).stateIndex as usize).wrapping_add(8usize) as u32;
     uLaneIndex = uLaneIndex.wrapping_add(1u32)
   }
 }
